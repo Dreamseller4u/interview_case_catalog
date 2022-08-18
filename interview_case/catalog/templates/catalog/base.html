@@ -1,0 +1,7 @@
+<h1> base html content </h1>
+
+{% block content %}
+    {% for prod in product  %}
+        <a href={{prod.slug}}>{{prod.title}}</a><br>
+    {% endfor %}
+{% endblock content %}

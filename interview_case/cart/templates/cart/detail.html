@@ -1,0 +1,12 @@
+<h1> cart_detail page</h1>
+{% load static %}
+{% block tittle %}
+    Cart
+{% endblock tittle %}
+{% block content %}
+    {% for item in cart  %}
+        {% with product=item.product  %}
+        {{product.title}}
+        {% endwith %}
+    {% endfor %}
+{% endblock content %}
