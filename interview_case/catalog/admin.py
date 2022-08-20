@@ -1,57 +1,44 @@
-from math import ceil
+
+from unicodedata import category
 from django.contrib import admin
 from django_mptt_admin.admin import DjangoMpttAdmin
 from .models import Product, Categories, Sales
-from django.contrib.admin.helpers import ActionForm
-from django import forms
-from math import ceil
+from .admin_services import UpdateActionForm, set_discount, unset_discount
+from django.utils.html import format_html
 
 
 class CategoriesAdmin(DjangoMpttAdmin):
     prepopulated_fields = {'slug': ('title',)}
+    list_display = ('title_display', 'products')
+    list_display_links = ('title_display',)
+    mptt_level_indent = 20
+
+    def title_display(self, instance):
+        return format_html(
+            '<div style="text-indent:{}px">{}</div>',
+            instance._mpttfield('level') * self.mptt_level_indent,
+            instance.title,  # Or whatever you want to put here
+        )
+    title_display.short_description = ('title')
+    
+    @admin.display(empty_value='products')
+    def products(self, obj):
+        return Product.objects.filter(category_id=obj.id).count()
+    
+        
+        
 
 
 admin.site.register(Categories, CategoriesAdmin)
 
 
-class UpdateActionForm(ActionForm):
-    ''' Добавлем в поле выбора скидки из модели Sales'''
-    sales = Sales.objects.all()
-    params = [('','')]
-    for i in sales:
-        params.append((f'{i.discount}', i.title))
-    discount = forms.ChoiceField(choices=params, required=False)
-
-
-def set_discount(modeladmin, request, queryset):
-    ''' Метод примениния скидки '''
-    discount = request.POST['discount']
-    discount = float(discount)
-    for product in queryset:
-        multiplier = discount / 100
-        old_price = float(product.price)
-        new_price = ceil(old_price - (old_price * multiplier))
-        queryset.update(price=new_price, sales=True, sales_amount=discount)
-
-
-set_discount.short_description = 'Set discount on products'
-
-def unset_discount(modeladmin, request, queryset):
-    ''' Метод удаления  скидки и возврата цены обратно'''
-    for product in queryset:
-        discount = product.sales_amount
-        if(discount > 0):
-            old_price = float(product.price)
-            new_price = ceil(old_price + (old_price * (discount / 100)))
-            queryset.update(price=new_price, sales=False, sales_amount=0)
-        
-unset_discount.short_description = 'Unset discount on products'
-
-
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price', 'category', 'sales', 'sales_amount')
+    list_display = ('title', 'price', 'category',
+                    'sales', 'sales_amount', )
     prepopulated_fields = {'slug': ('title',)}
-
+    list_filter = ('sales',)
+    search_fields= ('title',)
+    
     action_form = UpdateActionForm
     actions = [set_discount, unset_discount]
 

@@ -2,7 +2,6 @@ from turtle import title
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from django.urls import reverse
-
 # Create your models here.
 
 
@@ -35,7 +34,7 @@ class Product(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    available = models.BooleanField(default=True)
+    availible = models.BooleanField(default=True)
     slug = models.SlugField()
     category = TreeForeignKey('Categories',
                               on_delete=models.PROTECT,
@@ -68,7 +67,6 @@ class Sales(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     discount = models.IntegerField(default=10)
-
     class Meta:
         verbose_name = ("Акция")
         verbose_name_plural = ("Акции")

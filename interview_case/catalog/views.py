@@ -5,7 +5,6 @@ from urllib import request
 from django.shortcuts import render, get_object_or_404
 from .models import Categories, Product
 from cart.forms import CartAddProductForm
-
 # Create your views here.
 
 
