@@ -1,7 +1,34 @@
-<h1> base html content </h1>
+<div>
+    {% with total_items=cart|length %}
+        {% if cart|length > 0 %}
+            Your cart:
+            <a href="{% url "cart:cart_detail" %}">
+                {{ total_items }} item{{ total_items|pluralize }},
+                ${{ cart.get_total_price }}
+            </a>
+        {% else %}
+            Your cart is empty.
+        {% endif %}
+    {% endwith %}
+</div>
+{% load mptt_tags %}
+
 
 {% block content %}
+<ul>
+    {% recursetree category %}
+        <li>
+            <a href={{node.slug}}>{{ node.title }}</a>
+            {% if not node.is_leaf_node %}
+                <ul class="children">
+                    {{ children }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+
     {% for prod in product  %}
-        <a href={{prod.slug}}>{{prod.title}}</a><br>
+        <a href='{{prod.category.slug}}/{{prod.id}}'>{{prod.title}}</a><br>
     {% endfor %}
 {% endblock content %}
