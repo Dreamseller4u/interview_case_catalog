@@ -11,12 +11,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-<<<<<<< HEAD
 import os
 
-=======
+
 import os 
->>>>>>> 1753a72 (add order model, docker setup)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,16 +25,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
-<<<<<<< HEAD
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", default=0)
 
 ALLOWED_HOSTS = ['*']
-=======
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
 ALLOWED_HOSTS = ['*',]
->>>>>>> 1753a72 (add order model, docker setup)
 
 
 # Application definition
@@ -52,11 +47,7 @@ INSTALLED_APPS = [
     #my_apps
     'catalog.apps.CatalogConfig',
     'cart.apps.CartConfig',
-<<<<<<< HEAD
     'orders.apps.OrdersConfig',
-=======
-    'order.apps.OrderConfig',
->>>>>>> 1753a72 (add order model, docker setup)
     
     #other
     'mptt',

@@ -10,4 +10,7 @@
         {{item.product}} -- price = {{item.price}} -- quantity = {{item.quantity}} -- total = {{item.total_price}} -- 
         <a href="remove/{{item.product.id}}">remove</a>
     {% endfor %}
+    <a href="{% url "orders:order_create" %}" class="button">
+        Оформить заказ
+    </a>
 {% endblock content %}
