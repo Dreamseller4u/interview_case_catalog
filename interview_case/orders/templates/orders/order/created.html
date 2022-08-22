@@ -1,0 +1,9 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Спасибо за покупку{% endblock %}
+
+{% block content %}
+    <h1>Спасибо за покупку</h1>
+    <p>Ваш заказ сформирован, под номером - 
+        <strong>{{ order.id }}</strong>.</p>
+{% endblock %}
