@@ -2,6 +2,10 @@
 __pycache__
 venv/
 .DS_Store
+<<<<<<< HEAD
 .db_data
+=======
+>>>>>>> 1753a72 (add order model, docker setup)
 .gitignore
 .idea
+.db_data

@@ -20,13 +20,10 @@ class CategoriesAdmin(DjangoMpttAdmin):
             instance.title,  # Or whatever you want to put here
         )
     title_display.short_description = ('title')
-    
+
     @admin.display(empty_value='products')
     def products(self, obj):
         return Product.objects.filter(category_id=obj.id).count()
-    
-        
-        
 
 
 admin.site.register(Categories, CategoriesAdmin)
@@ -37,8 +34,8 @@ class ProductAdmin(admin.ModelAdmin):
                     'sales', 'sales_amount', )
     prepopulated_fields = {'slug': ('title',)}
     list_filter = ('sales',)
-    search_fields= ('title',)
-    
+    search_fields = ('title',)
+
     action_form = UpdateActionForm
     actions = [set_discount, unset_discount]
 
