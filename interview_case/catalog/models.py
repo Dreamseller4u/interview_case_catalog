@@ -1,8 +1,9 @@
 from turtle import title
+from unicodedata import name
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
 from django.urls import reverse
-# Create your models here.
+from .catalog_services import make_thumbnail
 
 
 class Categories (MPTTModel):
@@ -28,7 +29,7 @@ class Categories (MPTTModel):
 
     def __str__(self):
         return self.title
-
+    
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
@@ -41,19 +42,32 @@ class Product(models.Model):
                               related_name='products',
                               verbose_name="Категория",
                               )
-    imgage = models.ImageField(upload_to=None,
+    image = models.ImageField('image',
+                               upload_to='images',
                                height_field=None,
                                width_field=None,
                                max_length=None,
-                               blank=True
+                               blank=True,
+                               
                                )
+    thumbnail = models.ImageField(upload_to='thumbs', 
+                                  editable=False,
+                                  blank=True)
+    
     spec = models.FileField(upload_to=None,
                             max_length=100,
                             blank=True
                             )
-    sales = models.BooleanField(default=False)
-    sales_amount = models.IntegerField(default=0)
+    sales = models.BooleanField(default=False, editable=False)
+    sales_amount = models.IntegerField(default=0, editable=False)
+    
+    def save(self, *args, **kwargs):
+        if not make_thumbnail(self):
+            raise Exception('Could not create thumbnail - is the file type valid?')
 
+        super(Product, self).save(*args, **kwargs)
+
+    
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"

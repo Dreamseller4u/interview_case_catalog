@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
                 ('price', models.DecimalField(decimal_places=2, max_digits=10)),
                 ('availible', models.BooleanField(default=True)),
                 ('slug', models.SlugField()),
-                ('imgage', models.ImageField(blank=True, upload_to=None)),
+                ('image', models.ImageField(blank=True, upload_to=None)),
                 ('spec', models.FileField(blank=True, upload_to=None)),
                 ('sales', models.BooleanField(default=False)),
                 ('sales_amount', models.IntegerField(default=0)),

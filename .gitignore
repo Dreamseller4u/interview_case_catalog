@@ -5,3 +5,4 @@ venv/
 .gitignore
 .idea
 .db_data
+media/
